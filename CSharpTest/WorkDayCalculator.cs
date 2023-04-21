@@ -13,19 +13,27 @@ namespace CSharpTest
             if(weekEnds == null)
                 return startDate.AddDays(dayCount-1);
             
-            dayCount += GetTotalWeekEndsAmount(weekEnds);
+            foreach (var weekEnd in weekEnds)
+            {
+                
+                if(startDate.AddDays(dayCount) < weekEnd.StartDate)
+                    break;
+                
+                if (weekEnd.StartDate.Equals(weekEnd.EndDate))
+                {
+                    dayCount += 1;
+                    continue;
+                }
 
+                if (weekEnd.EndDate < startDate)
+                    continue;
+                
+                dayCount += (int)(weekEnd.EndDate - weekEnd.StartDate).TotalDays;
+                
+            }
+            
             return startDate.AddDays(dayCount);
         }
-
-        private int GetTotalWeekEndsAmount(WeekEnd[] weekEnds)
-        {
-            int amount = 0;
-
-            foreach (var weekEnd in weekEnds)
-                amount += (int)(weekEnd.EndDate - weekEnd.StartDate).TotalDays;
-            
-            return amount;
-        }
+        
     }
 }

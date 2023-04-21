@@ -51,5 +51,40 @@ namespace CSharpTest
 
             Assert.IsTrue(result.Equals(new DateTime(2021, 4, 28)));
         }
+
+        [TestMethod]
+        public void TestOneDayWeekend()
+        {
+            DateTime startDate = new DateTime(2021, 4, 21);
+
+            int count = 5;
+
+            WeekEnd[] weekEnds = new WeekEnd[1]
+            {
+                new WeekEnd(new DateTime(2021, 4, 23), new DateTime(2021, 4, 23))
+            };
+            
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekEnds);
+            
+            Assert.IsTrue(result.Equals(new DateTime(2021, 4, 27)));
+        }
+
+        [TestMethod]
+        public void TestWeekendBeforeStart()
+        {
+            DateTime startDate = new DateTime(2021, 4, 21);
+
+            int count = 5;
+
+            WeekEnd[] weekEnds = new WeekEnd[2]
+            {
+                new WeekEnd(new DateTime(2021, 4, 23), new DateTime(2021, 4, 23)),
+                new WeekEnd(new DateTime(2020, 4, 23), new DateTime(2020, 4, 25))
+            };
+            
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekEnds);
+            
+            Assert.IsTrue(result.Equals(new DateTime(2021, 4, 27)));
+        }
     }
 }
